@@ -1,10 +1,6 @@
 package sample.DB;
 
-import sample.Server.BaseAuthService;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DBConnector {
   public static final String TABLE_NAME = "users";
