@@ -75,6 +75,7 @@ public class MyClient extends JFrame {
         try {
           String nick = serverService.authorization(lgn, psw);
           authLabel.setText("Online, nick " + nick);
+          FileController.loadLogFile(mainChat);
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -102,7 +103,10 @@ public class MyClient extends JFrame {
 
   private void printToUI(JTextArea mainChat, Message message) {
     mainChat.append("\n");
-    mainChat.append((message.getNick() != null ? message.getNick() : "Сервер") + " написал: " + message.getMessage());
+    //mainChat.append((message.getNick() != null ? message.getNick() : "Сервер") + " написал: " + message.getMessage());
+    String bufString = (message.getNick() != null ? message.getNick() : "Сервер") + " написал: " + message.getMessage();
+    mainChat.append(bufString);
+    FileController.saveToLogFile(bufString);
   }
 
 
