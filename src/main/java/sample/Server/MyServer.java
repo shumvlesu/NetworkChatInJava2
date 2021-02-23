@@ -5,17 +5,23 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MyServer {
   public static final int PORT = 8081;
   private List<ClientHandler> clients;
   private AuthService authService;
 
+  private ExecutorService clientsExecutorService;
+
   public MyServer() {
     try (ServerSocket serverSocket = new ServerSocket(PORT)) {
       authService = new BaseAuthService();
       //это метод класса а не потока
       authService.start();
+
+      clientsExecutorService = Executors.newCachedThreadPool();//даем сколько можем потоков
 
       clients = new ArrayList<>();
       while (true) {
@@ -29,6 +35,8 @@ public class MyServer {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
+      //завершаем сервер
+      clientsExecutorService.shutdown();
       //это метод класса а не потока
       if (authService != null) {
         authService.stop();
@@ -36,6 +44,9 @@ public class MyServer {
     }
   }
 
+  public ExecutorService getClientsExecutorService() {
+    return clientsExecutorService;
+  }
 
   public synchronized void broadcastClientsList() {
     StringBuilder sb = new StringBuilder("/clients ");

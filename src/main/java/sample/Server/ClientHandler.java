@@ -23,18 +23,23 @@ public class ClientHandler {
       this.dataInputStream = new DataInputStream(socket.getInputStream());
       this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
       //создаем поток и стартуем его
-      new Thread(() -> {
-        try {
-          //авторизация клиента
-          authentication();
-          //чтение ссобщений авторизованного клиента
-          readMessages();
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          closeConnection();
+      //new Thread(() -> {
+      myServer.getClientsExecutorService().execute(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            //авторизация клиента
+            ClientHandler.this.authentication();
+            //чтение ссобщений авторизованного клиента
+            ClientHandler.this.readMessages();
+          } catch (IOException e) {
+            e.printStackTrace();
+          } finally {
+            ClientHandler.this.closeConnection();
+          }
+          // }).start();
         }
-      }).start();
+      });
 
     } catch (IOException e) {
       e.printStackTrace();
