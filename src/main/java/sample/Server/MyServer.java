@@ -1,5 +1,8 @@
 package sample.Server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +17,7 @@ public class MyServer {
   private AuthService authService;
 
   private ExecutorService clientsExecutorService;
+  private static final Logger LOG = LogManager.getLogger(MyServer.class);
 
   public MyServer() {
     try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -28,6 +32,7 @@ public class MyServer {
         System.out.println("Ожидаем подключение клиентов:");
         Socket socket = serverSocket.accept();
         System.out.println("Клиент подключился");
+        LOG.info("Клиент подключился");
         //new ClientHandler(this, socket);
         //клиент подключился, содаем ClientHandler
         new ClientHandler(this, socket);

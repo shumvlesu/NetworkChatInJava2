@@ -16,3 +16,5 @@ Neivanov написал: привет шарик
 Neivanov написал: привет шарик
 Gav написал: привет иван
 Gav написал: привет иван
+Сервер написал: /clients Neivanov 
+Neivanov написал: dtyfg
